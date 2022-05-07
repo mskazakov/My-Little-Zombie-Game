@@ -11,8 +11,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI livesText;
     
     public GameObject gameOverScreen;
-    public TextMeshProUGUI gameOverText;
-    public Button restartButton;
+    public TextMeshProUGUI finalScoreText;
     
     public GameObject titleScreen;
     public TextMeshProUGUI titleText;
@@ -36,7 +35,7 @@ public class GameManager : MonoBehaviour
         wavesSpawnManagerScript = GameObject.Find("SpawnManager").GetComponent<WavesSpawnManager>();
         spawnManager2_0 = GameObject.Find("SpawnManager").GetComponent<SpawnManager2_0>();
 
-        titleScreen.gameObject.SetActive(true);
+        StartGame();
     }
 
     // Update is called once per frame
@@ -80,11 +79,10 @@ public class GameManager : MonoBehaviour
         scoreText.text = "Score: " + totalScore;
         livesText.gameObject.SetActive(true);
         livesText.text = "Lives: " + playerLives;
-        titleScreen.gameObject.SetActive(false);
 
         isGameActive = true;
         totalScore = 0;
-        spawnManager2_0.WaitingStart();
+        //spawnManager2_0.WaitingStart();
         //wavesSpawnManagerScript.state = WavesSpawnManager.SpawnState.COUNTING;
         //wavesSpawnManagerScript.waveCD = wavesSpawnManagerScript.timeBetweenWaves;
     }
@@ -95,11 +93,23 @@ public class GameManager : MonoBehaviour
         isGameActive = false;
         scoreText.gameObject.SetActive(false);
         livesText.gameObject.SetActive(false);
+        finalScoreText.text = "Final score: " + totalScore;
+
+        if (totalScore > MainManager.Instance.highScore)
+        {
+            MainManager.Instance.highScore = totalScore;
+        }
+
         gameOverScreen.gameObject.SetActive(true);
     }
 
     public void ResetGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
