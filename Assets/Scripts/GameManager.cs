@@ -7,11 +7,13 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public TextMeshProUGUI playerNameText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI livesText;
     
     public GameObject gameOverScreen;
     public TextMeshProUGUI finalScoreText;
+    public TextMeshProUGUI highScoreText;
     
     public GameObject titleScreen;
     public TextMeshProUGUI titleText;
@@ -75,6 +77,8 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        playerNameText.gameObject.SetActive(true);
+        playerNameText.text = "Player: " + MainManager.Instance.playerName;
         scoreText.gameObject.SetActive(true);
         scoreText.text = "Score: " + totalScore;
         livesText.gameObject.SetActive(true);
@@ -91,6 +95,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Game Over!");
         isGameActive = false;
+        playerNameText.gameObject.SetActive(false);
         scoreText.gameObject.SetActive(false);
         livesText.gameObject.SetActive(false);
         finalScoreText.text = "Final score: " + totalScore;
@@ -98,9 +103,14 @@ public class GameManager : MonoBehaviour
         if (totalScore > MainManager.Instance.highScore)
         {
             MainManager.Instance.highScore = totalScore;
+            MainManager.Instance.highScorePlayerName = MainManager.Instance.playerName;
         }
 
+        highScoreText.text = $"High Score: {MainManager.Instance.highScore} by {MainManager.Instance.highScorePlayerName}";
+
         gameOverScreen.gameObject.SetActive(true);
+
+        MainManager.Instance.SaveDataJSON();
     }
 
     public void ResetGame()
