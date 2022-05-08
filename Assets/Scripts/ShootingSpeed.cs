@@ -45,13 +45,13 @@ public class ShootingSpeed : MonoBehaviour
             
             if (other.gameObject.name == "Zombie(Clone)")
             {
-                other.GetComponent<EnemyLives>().KillEnemy(1);
+                other.GetComponent<ZombieVanilla>().KillEnemy(1);
             } else if (other.gameObject.name == "Zombie_Strong(Clone)")
             {
-                other.GetComponent<StrongEnemyLives>().KillEnemy(1);
+                other.GetComponent<ZombieStronger>().KillEnemy(1);
             } else if (other.gameObject.name == "Zombie_Boss(Clone)")
             {
-                other.GetComponent<BossEnemyLives>().KillEnemy(1);
+                other.GetComponent<ZombieBoss>().KillEnemy(1);
             }
         }
     }

@@ -12,9 +12,8 @@ GameObject:
   - component: {fileID: 4625042014124317420}
   - component: {fileID: 4625042014124317421}
   - component: {fileID: 4625042014124317422}
-  - component: {fileID: 4625042014124317418}
   - component: {fileID: 35077921467870295}
-  - component: {fileID: 1130330022}
+  - component: {fileID: 5716901328752172237}
   m_Layer: 0
   m_Name: Zombie_Strong
   m_TagString: Enemy
@@ -99,19 +98,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4625042014124317418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4625042014124317423}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e79191497efa4ab4787432d00da1fe65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
 --- !u!54 &35077921467870295
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,7 +114,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1130330022
+--- !u!114 &5716901328752172237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,11 +123,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4625042014124317423}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd2f640b67364dc40b77df595557dbc2, type: 3}
+  m_Script: {fileID: 11500000, guid: d37954299d848164c9797c29f8243420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySlider: {fileID: 5863414597386325588}
+  gameManagerScript: {fileID: 0}
+  enemySlider: {fileID: 0}
   damageToKill: 3
+  currentDamage: 0
 --- !u!1001 &413371666268061066
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -264,14 +252,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9095151018450827751, guid: c9204bdf0bc852247822dba62d8dd4e1, type: 3}
   m_PrefabInstance: {fileID: 413371666268061066}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5863414597386325588 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6116908458627511262, guid: c9204bdf0bc852247822dba62d8dd4e1, type: 3}
-  m_PrefabInstance: {fileID: 413371666268061066}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
