@@ -9,91 +9,145 @@ public class SpawnManager2_0 : MonoBehaviour
     GameManager gameManagerScript;
 
     public GameObject[] zombies;
+    public GameObject bossZombie;
+    public GameObject powerup;
 
     public Vector3[] spawnRange;
 
-    public WaveState state;
+    [SerializeField] WaveState state = WaveState.WAITING;
 
-    public int waveNum;
+    public int waveNum = 0;
+    public float zombieSpawnRate = 0.3f;
+    public float waveSpawnRate = 3f;
+
+    public int enemiesCount = 0;
+    public int powerupCount;
 
     // Start is called before the first frame update
     void Start()
     {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
+        waveNum = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    public void SpawnZombie()
-    {
-        if (gameManagerScript.isGameActive)
+        if (state == WaveState.COUNTING && gameManagerScript.isGameActive)
         {
-            float spawnPosZ = Random.Range(5.0f, 7.0f);
-            float spawnPosX01 = Random.Range(-13.0f, 13.0f);
-            spawnRange[0] = new Vector3(spawnPosZ, 0.5f, spawnPosX01);
-            spawnRange[1] = new Vector3(-spawnPosZ, 0.5f, spawnPosX01);
+            if (!EnemyStillAlive())
+            {
+                state = WaveState.WAITING;
+            } else
+            {
+                return;
+            }
+        } 
+        
+        if (state == WaveState.WAITING && waveSpawnRate <= 0 && gameManagerScript.isGameActive)
+        {
+            StartCoroutine(SpawnWave());
 
-            float spawnPosZ23 = Random.Range(-7.0f, 7.0f);
-            float spawnPosX = Random.Range(11.0f, 13.0f);
-            spawnRange[2] = new Vector3(spawnPosZ23, 0.5f, spawnPosX);
-            spawnRange[3] = new Vector3(spawnPosZ23, 0.5f, -spawnPosX);
-
-            int spawnNum = Random.Range(0, spawnRange.Length);
-            int zombieNum = Random.Range(0, zombies.Length);
-
-            Instantiate(zombies[zombieNum], spawnRange[spawnNum], transform.rotation);
+            waveSpawnRate = 3f;
+        } else if (state == WaveState.WAITING && gameManagerScript.isGameActive)
+        {
+            waveSpawnRate -= Time.deltaTime;
         }
     }
 
-    public IEnumerator WaveSpawn()
+    public IEnumerator SpawnWave()
     {
         state = WaveState.SPAWNING;
-
-        for (int i = 0; i < 10; i++)
+        if (waveNum > 3 && !PowerupStillExists()) SpawnPowerup();
+        if ((waveNum % 5) == 0)
         {
-            SpawnZombie();
-
-            yield return new WaitForSeconds(0.2f);
+            SpawnBossZombie();
+        }
+        else
+        {
+            for (int i = 0; i < (waveNum + Mathf.RoundToInt(waveNum/2)); i++)
+            {
+                if (gameManagerScript.isGameActive)
+                {
+                    SpawnZombie();
+                    
+                    yield return new WaitForSeconds(zombieSpawnRate);
+                }
+            }
         }
 
-        StartCoroutine(WaitingState());
-
-        yield break;
-    }
-
-    public IEnumerator WaitingState()
-    {
-        if (gameManagerScript.isGameActive)
-        {
-            state = WaveState.WAITING;
-
-            yield return new WaitForSeconds(5);
-
-            StartCoroutine(WaveSpawn());
-
-            yield break;
-        }
-    }
-
-    public void WaitingStart()
-    {
-        StartCoroutine(WaitingState());
-    }
-
-    bool EnemieIsAlive()
-    {
+        waveNum++;
         state = WaveState.COUNTING;
-        
-        if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
-        {
-            return false;
-        } else
+        yield break;
+    }    
+    public void SpawnZombie()
+    {
+        spawnRange = new Vector3[4];
+
+        float spawnPosZ = Random.Range(5.0f, 7.0f);
+        float spawnPosX01 = Random.Range(-13.0f, 13.0f);
+        spawnRange[0] = new Vector3(spawnPosZ, 0.5f, spawnPosX01);
+        spawnRange[1] = new Vector3(-spawnPosZ, 0.5f, spawnPosX01);
+
+        float spawnPosZ23 = Random.Range(-7.0f, 7.0f);
+        float spawnPosX = Random.Range(11.0f, 13.0f);
+        spawnRange[2] = new Vector3(spawnPosZ23, 0.5f, spawnPosX);
+        spawnRange[3] = new Vector3(spawnPosZ23, 0.5f, -spawnPosX);
+
+        int spawnNum = Random.Range(0, spawnRange.Length);
+        int zombieNum = Random.Range(0, zombies.Length);
+
+        Instantiate(zombies[zombieNum], spawnRange[spawnNum], transform.rotation);
+        enemiesCount++;
+        Debug.Log($"One more zombie spawned. There are {enemiesCount} zombies alive");
+    }
+
+    public void SpawnBossZombie()
+    {
+        spawnRange = new Vector3[4];
+
+        float spawnPosZ = Random.Range(5.0f, 7.0f);
+        float spawnPosX01 = Random.Range(-13.0f, 13.0f);
+        spawnRange[0] = new Vector3(spawnPosZ, 1.5f, spawnPosX01);
+        spawnRange[1] = new Vector3(-spawnPosZ, 1.5f, spawnPosX01);
+
+        float spawnPosZ23 = Random.Range(-7.0f, 7.0f);
+        float spawnPosX = Random.Range(11.0f, 13.0f);
+        spawnRange[2] = new Vector3(spawnPosZ23, 1.5f, spawnPosX);
+        spawnRange[3] = new Vector3(spawnPosZ23, 1.5f, -spawnPosX);
+
+        int spawnNum = Random.Range(0, spawnRange.Length);
+
+        Instantiate(bossZombie, spawnRange[spawnNum], transform.rotation);
+        enemiesCount++;
+        Debug.Log($"One more zombie spawned. There are {enemiesCount} zombies alive");
+    }
+
+    void SpawnPowerup()
+    {
+        float spawnPosZ = Random.Range(-4.5f, 4.5f);
+        float spawnPosX = Random.Range(-10, 10);
+
+        Instantiate(powerup, new Vector3(spawnPosX, transform.position.y, spawnPosZ), powerup.transform.rotation);
+    }
+
+    bool PowerupStillExists()
+    {
+        powerupCount = FindObjectsOfType<Powerup>().Length;
+
+        if (powerupCount > 0)
         {
             return true;
         }
+        return false;
+    }
+
+    bool EnemyStillAlive()
+    {
+        if (enemiesCount == 0)
+        {
+            return false;
+        }
+        return true;
     }
 }

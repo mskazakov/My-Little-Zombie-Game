@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public abstract class Enemies : MonoBehaviour
 {
     public GameManager gameManagerScript;
+    SpawnManager2_0 spawnManagerScript;
 
     Transform lookAtTarget;
     private float speed = 1.0f;
@@ -19,6 +20,7 @@ public abstract class Enemies : MonoBehaviour
     void Start()
     {
         gameManagerScript = GameObject.Find("GameManager").GetComponent<GameManager>();
+        spawnManagerScript = GameObject.Find("SpawnManager").GetComponent<SpawnManager2_0>();
 
         enemySlider = gameObject.GetComponentInChildren<Slider>();
 
@@ -64,7 +66,9 @@ public abstract class Enemies : MonoBehaviour
         if (currentDamage >= damageToKill)
         {
             gameManagerScript.AddScoreZ(gameManagerScript.zombieScore);
-            Destroy(gameObject, 0.1f);
+            Destroy(gameObject);
+            spawnManagerScript.enemiesCount--;
+            Debug.Log($"One zombie down. There are {spawnManagerScript.enemiesCount} zombies alive");
         }
     }
 }

@@ -14,7 +14,8 @@ public class ZombieStronger : Enemies
         if (currentDamage >= damageToKill)
         {
             gameManagerScript.AddScoreZS(gameManagerScript.strongZombieScore);
-            Destroy(gameObject, 0.1f);
+            Destroy(gameObject);
+            base.KillEnemy(amount);
         }
     }
 }

@@ -57,12 +57,12 @@ public class PlayerController : MonoBehaviour
             }
 
             // Makes player shoot projectile
-            if (Input.GetKeyDown(KeyCode.Mouse0) && !hasPowerup && !shoot)
+            if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space)) && !hasPowerup && !shoot)
             {
                 Instantiate(projectilePrefab, projectileSpawnPoint.position, transform.rotation);
                 shoot = true;
                 StartCoroutine(PowerupShotsRoutine());
-            } else if (Input.GetKey(KeyCode.Mouse0) && hasPowerup && !shoot)
+            } else if ((Input.GetKey(KeyCode.Mouse0) || Input.GetKey(KeyCode.Space)) && hasPowerup && !shoot)
             {
                 Instantiate(projectilePrefab, projectileSpawnPoint.position, transform.rotation);
                 shoot = true;

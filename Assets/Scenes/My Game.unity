@@ -1725,7 +1725,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1496730724}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b341f01c83172b4793e662b9169a733, type: 3}
   m_Name: 
@@ -1790,7 +1790,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1496730724}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be095fa4f8c5c434f8a00a3601c248cb, type: 3}
   m_Name: 
@@ -1798,9 +1798,15 @@ MonoBehaviour:
   zombies:
   - {fileID: 4942600934693598006, guid: e99fd100dc6f20a42804e3d53aae9f98, type: 3}
   - {fileID: 4625042014124317423, guid: 4768637efd5ffc34d937fd207f515dca, type: 3}
+  bossZombie: {fileID: 6595316271075370247, guid: 20ac4539a882deb4ba9caefe64186c78, type: 3}
+  powerup: {fileID: 3205423437377007215, guid: 98e8bf7b5562a284182fa153c8ec7137, type: 3}
   spawnRange: []
   state: 0
   waveNum: 0
+  spawnRate: 1.5
+  waveSpawnRate: 3
+  enemiesCount: 0
+  powerupCount: 0
 --- !u!1 &1554986128
 GameObject:
   m_ObjectHideFlags: 0

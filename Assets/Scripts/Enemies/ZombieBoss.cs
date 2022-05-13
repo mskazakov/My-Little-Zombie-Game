@@ -13,8 +13,9 @@ public class ZombieBoss : Enemies
 
         if (currentDamage >= damageToKill)
         {
-            gameManagerScript.AddScoreB(gameManagerScript.strongZombieScore);
-            Destroy(gameObject, 0.1f);
+            gameManagerScript.AddScoreB(gameManagerScript.bossZombieScore);
+            Destroy(gameObject);
+            base.KillEnemy(amount);
         }
     }
 }
